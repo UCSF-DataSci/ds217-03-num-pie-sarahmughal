@@ -13,6 +13,7 @@ This assignment has **three progressive parts** that build upon each other. Each
 - `requirements.txt` - Python dependencies (NumPy)
 - `TIPS.md` - Troubleshooting guide for common issues
 - `.github/test/test_assignment.py` - Automated tests for grading
+- `expected_outputs/` - Reference examples of expected output files
 
 ## Assignment
 
@@ -22,7 +23,7 @@ This assignment has **three progressive parts** that build upon each other. Each
 First, generate the sample data by running:
 
 ```bash
-python generate_health_data.py
+python3 generate_health_data.py
 ```
 
 This creates `health_data.csv` with **50,000 rows** containing:
@@ -43,7 +44,7 @@ P00003,2024-01-15T08:25:33,75,135,85,98.9,102,S003
 ...
 ```
 
-### Part 1: CLI Data Tools (7 points)
+### Part 1: CLI Data Tools 
 
 **Objective**: Use command-line tools to analyze a large CSV file containing health sensor data.
 
@@ -51,7 +52,7 @@ P00003,2024-01-15T08:25:33,75,135,85,98.9,102,S003
 
 You must complete these tasks using command-line tools and save output to files in the `output/` directory.
 
-**Task 1.1: Count Unique Patients** (1.5 points)
+**Task 1.1: Count Unique Patients**
 
 ```bash
 # Extract patient IDs from the first column and count unique values
@@ -60,7 +61,7 @@ You must complete these tasks using command-line tools and save output to files 
 # Save to: output/part1_patient_count.txt
 ```
 
-**Task 1.2: High Blood Pressure Analysis** (2 points)
+**Task 1.2: High Blood Pressure Analysis**
 
 ```bash
 # Find and count readings where systolic BP > 130
@@ -69,7 +70,7 @@ You must complete these tasks using command-line tools and save output to files 
 # Save to: output/part1_high_bp_count.txt
 ```
 
-**Task 1.3: Average Temperature** (2 points)
+**Task 1.3: Average Temperature**
 
 ```bash
 # Calculate average temperature across all readings
@@ -78,7 +79,7 @@ You must complete these tasks using command-line tools and save output to files 
 # Save to: output/part1_avg_temp.txt
 ```
 
-**Task 1.4: Glucose Statistics** (1.5 points)
+**Task 1.4: Glucose Statistics**
 
 ```bash
 # Find the top 5 highest glucose readings
@@ -136,7 +137,7 @@ deactivate
 **Why This Matters**:
 Virtual environments ensure your project dependencies are isolated from other Python projects, making your analysis reproducible and avoiding version conflicts.
 
-### Part 3: NumPy Data Analysis (8 points)
+### Part 3: NumPy Data Analysis
 
 **Objective**: Complete the scaffold Python script that uses NumPy to analyze health sensor data.
 
@@ -144,7 +145,7 @@ Virtual environments ensure your project dependencies are isolated from other Py
 
 The provided file `analyze_health_data.py` contains function signatures with TODO comments. It is a scaffold for you to build upon. You must implement the following functions:
 
-**Function 1: `load_data(filename)`** (1.5 points)
+**Function 1: `load_data(filename)`**
 
 The code for loading data with `np.genfromtxt()` is **provided for you** because this function is not covered in the lecture. You can use this function as-is.
 
@@ -168,7 +169,7 @@ def load_data(filename):
     return data
 ```
 
-**Function 2: `calculate_statistics(data)`** (2 points)
+**Function 2: `calculate_statistics(data)`**
 
 ```python
 def calculate_statistics(data):
@@ -189,7 +190,7 @@ def calculate_statistics(data):
     """
 ```
 
-**Function 3: `find_abnormal_readings(data)`** (2 points)
+**Function 3: `find_abnormal_readings(data)`**
 
 ```python
 def find_abnormal_readings(data):
@@ -209,15 +210,16 @@ def find_abnormal_readings(data):
     """
 ```
 
-**Function 4: `generate_report(stats, abnormal)`** (1.5 points)
+**Function 4: `generate_report(stats, abnormal, total_readings)`**
 
 ```python
-def generate_report(stats, abnormal):
+def generate_report(stats, abnormal, total_readings):
     """Generate formatted analysis report.
     
     Args:
         stats: Dictionary of statistics
         abnormal: Dictionary of abnormal counts
+        total_readings: Total number of readings
         
     Returns:
         Formatted string report
@@ -229,7 +231,7 @@ def generate_report(stats, abnormal):
     """
 ```
 
-**Function 5: `save_report(report, filename)`** (0.5 points)
+**Function 5: `save_report(report, filename)`**
 
 ```python
 def save_report(report, filename):
@@ -253,9 +255,10 @@ def main():
     1. Load the data from 'health_data.csv'
     2. Calculate statistics
     3. Find abnormal readings
-    4. Generate report
-    5. Save to 'analysis_report.txt'
-    6. Print success message
+    4. Calculate total readings using len(data)
+    5. Generate report with all three parameters
+    6. Save to 'output/analysis_report.txt'
+    7. Print success message
     """
 ```
 
