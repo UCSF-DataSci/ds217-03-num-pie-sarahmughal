@@ -38,11 +38,19 @@ def calculate_statistics(data):
     Returns:
         Dictionary with statistics
     """
-    # TODO: Calculate average heart rate using data['heart_rate'].mean()
-    # TODO: Calculate average systolic BP using data['blood_pressure_systolic'].mean()
-    # TODO: Calculate average glucose level using data['glucose_level'].mean()
-    # TODO: Return as dictionary with keys: 'avg_heart_rate', 'avg_systolic_bp', 'avg_glucose'
-    pass
+    # Calculate averages using NumPy's mean() method
+    avg_heart_rate = data['heart_rate'].mean()
+    avg_systolic_bp = data['blood_pressure_systolic'].mean()
+    avg_glucose = data['glucose_level'].mean()
+
+    # Return as a dictionary, formatted to 1 decimal place
+    stats = {
+        'avg_heart_rate': f"{avg_heart_rate:.1f}",
+        'avg_systolic_bp': f"{avg_systolic_bp:.1f}",
+        'avg_glucose': f"{avg_glucose:.1f}"
+    }
+
+    return stats
 
 
 def find_abnormal_readings(data):
@@ -54,18 +62,19 @@ def find_abnormal_readings(data):
     Returns:
         Dictionary with counts
     """
-    # TODO: Count readings where heart rate > 90 using boolean indexing
-    # Example: high_hr_count = len(data[data['heart_rate'] > 90])
-    # Or: high_hr_count = (data['heart_rate'] > 90).sum()
-    
-    # TODO: Count readings where systolic BP > 130 using boolean indexing
-    # Example: high_bp_count = len(data[data['blood_pressure_systolic'] > 130])
-    
-    # TODO: Count readings where glucose > 110 using boolean indexing
-    # Example: high_glucose_count = len(data[data['glucose_level'] > 110])
-    
-    # TODO: Return dictionary with keys: 'high_heart_rate', 'high_blood_pressure', 'high_glucose'
-    pass
+    # Count readings where values exceed thresholds using boolean indexing
+    high_hr_count = (data['heart_rate'] > 90).sum()
+    high_bp_count = (data['blood_pressure_systolic'] > 130).sum()
+    high_glucose_count = (data['glucose_level'] > 110).sum()
+
+    # Return dictionary with counts
+    abnormal = {
+        'high_heart_rate': int(high_hr_count),
+        'high_blood_pressure': int(high_bp_count),
+        'high_glucose': int(high_glucose_count)
+    }
+
+    return abnormal
 
 
 def generate_report(stats, abnormal, total_readings):
@@ -79,13 +88,26 @@ def generate_report(stats, abnormal, total_readings):
     Returns:
         Formatted string report
     """
-    # TODO: Create a formatted report string using f-strings
-    # TODO: Include all statistics with proper formatting using .1f for decimals
-    # Example: f"Heart Rate: {stats['avg_heart_rate']:.1f} bpm"
-    # TODO: Include section headers and labels for readability
-    # TODO: Include total_readings, all averages, and all abnormal counts
-    pass
+    # Create a formatted multi-line string using f-strings
+    report = (
+        "Health Sensor Data Analysis Report\n"
+        "==================================\n\n"
+        f"Dataset Summary:\n"
+        f"- Total readings: {total_readings}\n\n"
+        f"Average Measurements:\n"
+        f"- Heart Rate: {stats['avg_heart_rate']} bpm\n"
+        f"- Systolic BP: {stats['avg_systolic_bp']} mmHg\n"
+        f"- Glucose Level: {stats['avg_glucose']} mg/dL\n\n"
+        f"Abnormal Readings:\n"
+        f"- High Heart Rate (>90): {abnormal['high_heart_rate']} readings\n"
+        f"- High Blood Pressure (>130): {abnormal['high_blood_pressure']} readings\n"
+        f"- High Glucose (>110): {abnormal['high_glucose']} readings\n"
+    )
 
+    return report
+
+
+import os
 
 def save_report(report, filename):
     """Save report to file.
@@ -94,22 +116,36 @@ def save_report(report, filename):
         report: Report string
         filename: Output filename
     """
-    # TODO: Write the report to a file using open() with 'w' mode
-    # Example: with open(filename, 'w') as f:
-    #              f.write(report)
-    pass
+    # Ensure the output directory exists
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    
+    # Write the report string to the specified file
+    with open(filename, 'w') as f:
+        f.write(report)
 
 
 def main():
     """Main execution function."""
-    # TODO: Load the data from 'health_data.csv' using load_data()
-    # TODO: Calculate statistics using calculate_statistics()
-    # TODO: Find abnormal readings using find_abnormal_readings()
-    # TODO: Calculate total readings using len(data)
-    # TODO: Generate report using generate_report()
-    # TODO: Save to 'output/analysis_report.txt' using save_report()
-    # TODO: Print success message
-    pass
+    # Load the data from the CSV file
+    data = load_data('health_data.csv')
+
+    # Calculate overall statistics
+    stats = calculate_statistics(data)
+
+    # Find abnormal readings
+    abnormal = find_abnormal_readings(data)
+
+    # Count total readings
+    total_readings = len(data)
+
+    # Generate the formatted report
+    report = generate_report(stats, abnormal, total_readings)
+
+    # Save the report to the output directory
+    save_report(report, 'output/analysis_report.txt')
+
+    # Print a success message
+    print("✅ Analysis complete! Report saved to output/analysis_report.txt")
 
 
 if __name__ == "__main__":
